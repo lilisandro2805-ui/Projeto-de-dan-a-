@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Vídeos de dança — Dançar é Viver" />
+  <title>Vídeos de Dança | Dançar é Viver</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-bg: #0a0a0a;
+      --color-bg-elevated: #111111;
+      --color-bg-card: #161616;
+      --color-border: #262626;
+      --color-purple: #a855f7;
+      --color-purple-hover: #9333ea;
+      --color-text: #ffffff;
+      --color-text-muted: #a1a1aa;
+      --color-text-subtle: #71717a;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --header-height: 72px;
+      --container: 1200px;
+      --transition: 0.2s ease;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--header-height);
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo__icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--color-purple), #7c3aed);
+      border-radius: 50%;
+    }
+
+    .logo__icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      transition: background-color var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--color-purple);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-purple-hover);
+    }
+
+    /* Main */
+    main {
+      padding-top: calc(var(--header-height) + 48px);
+      padding-bottom: 80px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .page-header h1 span {
+      color: var(--color-purple);
+    }
+
+    .page-header p {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+      max-width: 520px;
+      margin-inline: auto;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+
+    .back-link:hover {
+      color: var(--color-purple);
+    }
+
+    /* Videos grid */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .video-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .video-card:hover {
+      border-color: rgba(168, 85, 247, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .video-card__media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0d0d0d;
+      overflow: hidden;
+    }
+
+    .video-card__media video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .video-card__body {
+      padding: 18px 20px;
+    }
+
+    .video-card__title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .video-card__desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Footer */
+    .footer {
+      padding-block: 22px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--color-text-subtle);
+      border-top: 1px solid var(--color-border);
+      background: #050505;
+    }
+
+    /* WhatsApp float */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 60px;
+      height: 60px;
+      background: #25d366;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+      transition: transform 0.2s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.08);
+    }
+
+    .whatsapp-float svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+    }
+
+    @media (max-width: 640px) {
+      .videos-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 54px;
+        height: 54px;
+      }
+
+      .whatsapp-float svg {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="dancar-e-viver.html" class="logo">
+        <div class="logo__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm-1.5 6.5h3l1.5 4.5 2.5-1.5 1 1.7-3.5 2-1.5 5.5h-2l-1.5-5.5-3.5-2 1-1.7 2.5 1.5 1.5-4.5z"/>
+          </svg>
+        </div>
+        <span>DANÇAR É VIVER</span>
+      </a>
+      <a href="dancar-e-viver.html#contato" class="btn btn-primary">Fale conosco</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <a href="dancar-e-viver.html" class="back-link">← Voltar para o início</a>
+
+      <div class="page-header">
+        <h1>Vídeos de <span>Dança</span></h1>
+        <p>Assista aos momentos de movimento, batalhas e projetos sociais que transformam vidas através da dança.</p>
+      </div>
+
+      <!--
+        =====================================================
+        COMO USAR A TAG <video>
+        =====================================================
+        1. Crie uma pasta chamada "videos" ao lado deste arquivo
+        2. Coloque seus arquivos .mp4 dentro dela
+        3. Troque apenas o caminho em src="..."
+
+        Exemplo de estrutura de pastas:
+        /seu-site/
+          ├── dancar-e-viver.html
+          ├── videos.html
+          └── videos/
+                ├── video1.mp4
+                ├── video2.mp4
+                ├── video3.mp4
+                └── ...
+
+        Formatos que funcionam bem: .mp4 (H.264) e .webm
+        =====================================================
+      -->
+
+      <div class="videos-grid">
+
+        <!-- VÍDEO 1 -->
+        <article class="video-card">
+          <div class="video-card__media">
+            <video controls playsinline preload="metadata">
+              <source src="4.mp4" type="video/mp4" />
+              Seu navegador não suporta a reprodução de vídeo.
+            </video>
+          </div>
+          <div class="video-card__body">
+            <h3 class="video-card__title">Battle de Druil</h3>
+            <p class="video-card__desc">Competição e energia da cultura street dance.</p>
+          </div>
+        </article>
+
+        <!-- VÍDEO 2 -->
+        <article class="video-card">
+          <div class="video-card__media">
+            <video controls playsinline preload="metadata">
+              <source src="2.mp4" type="video/mp4" />
+              Seu navegador não suporta a reprodução de vídeo.
+            </video>
+          </div>
+          <div class="video-card__body">
+            <h3 class="video-card__title">Dança na Comunidade</h3>
+            <p class="video-card__desc">Aulas e momentos com crianças e jovens.</p>
+          </div>
+        </article>
+
+        <!-- VÍDEO 3 -->
+        <article class="video-card">
+          <div class="video-card__media">
+            <video controls playsinline preload="metadata">
+              <source src="3.mp4" type="video/mp4" />
+              Seu navegador não suporta a reprodução de vídeo.
+            </video>
+          </div>
+          <div class="video-card__body">
+            <h3 class="video-card__title">Dança que Transforma</h3>
+            <p class="video-card__desc">Projetos sociais e inclusão através do movimento.</p>
+          </div>
+        </article>
+
+        <!-- VÍDEO 4 -->
+        <article class="video-card">
+          <div class="video-card__media">
+            <video controls playsinline preload="metadata">
+              <source src="5.mp4" type="video/mp4" />
+              Seu navegador não suporta a reprodução de vídeo.
+            </video>
+          </div>
+          <div class="video-card__body">
+            <h3 class="video-card__title">Apresentação Especial</h3>
+            <p class="video-card__desc">Performance e expressão artística.</p>
+          </div>
+        </article>
+
+        <!-- VÍDEO 5 -->
+        <article class="video-card">
+          <div class="video-card__media">
+            <video controls playsinline preload="metadata">
+              <source src="7.mp4" type="" />
+              Seu navegador não suporta a reprodução de vídeo.
+            </video>
+          </div>
+          <div class="video-card__body">
+            <h3 class="video-card__title">Treino e Bastidores</h3>
+            <p class="video-card__desc">O dia a dia da preparação e da dança.</p>
+          </div>
+        </article>
+
+        <!-- VÍDEO 6 -->
+        <article class="video-card">
+          <div class="video-card__media">
+            <video controls playsinline preload="metadata">
+              <source src="6.mp4" type="video/mp4" />
+              Seu navegador não suporta a reprodução de vídeo.
+            </video>
+          </div>
+          <div class="video-card__body">
+            <h3 class="video-card__title">Evento Comunitário</h3>
+            <p class="video-card__desc">Encontros e celebrações com a comunidade.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © 2024 Dançar é Viver. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <!-- WhatsApp — troque o número -->
+  <a
+    href="https://wa.me/952 901 091?text=Ol%C3%A1!%20Vim%20pelo%20site%20Dan%C3%A7ar%20%C3%A9%20Viver%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20v%C3%ADdeos."
+    class="whatsapp-float"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Falar no WhatsApp"
+  >
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16.004 0h-.008C7.174 0 0 7.176 0 16.004c0 2.824.736 5.582 2.134 8.01L.7 30.82l6.996-1.836A15.94 15.94 0 0016.004 32C24.83 32 32 24.822 32 15.996 32 7.176 24.83 0 16.004 0zm9.288 22.57c-.388 1.094-1.926 2.004-3.16 2.27-.84.18-1.936.324-5.632-1.21-4.732-1.962-7.78-6.78-8.016-7.092-.226-.312-1.91-2.54-1.91-4.846 0-2.306 1.21-3.44 1.64-3.91.388-.424.906-.55 1.208-.55.3 0 .604.002.868.016.28.012.654-.106 1.024.782.388.926 1.32 3.222 1.436 3.456.116.234.194.508.038.816-.15.312-.226.508-.45.78-.226.27-.474.604-.676.812-.226.234-.46.486-.198.954.262.468 1.164 1.92 2.5 3.11 1.716 1.528 3.162 2.004 3.61 2.23.448.226.71.19.972-.116.27-.312 1.13-1.316 1.432-1.768.3-.45.604-.374.998-.226.398.15 2.51 1.184 2.94 1.4.43.216.716.324.82.506.106.18.106 1.05-.282 2.144z"/>
+    </svg>
+  </a>
+
+</body>
+</html>

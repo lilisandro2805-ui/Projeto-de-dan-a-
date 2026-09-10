@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dançar é Viver — Projetos de dança de druíl e causas sociais que transformam vidas." />
+  <title>Dançar é Viver</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- JustValidate (biblioteca de validação) -->
+  <script src="https://unpkg.com/just-validate@4.3.0/dist/just-validate.production.min.js" defer></script>
+
+  <style>
+    /* ========================================
+       DESIGN TOKENS
+    ======================================== */
+    :root {
+      --color-bg: #0a0a0a;
+      --color-bg-elevated: #111111;
+      --color-bg-card: #161616;
+      --color-border: #262626;
+      --color-border-hover: #3f3f46;
+
+      --color-purple: #a855f7;
+      --color-purple-hover: #9333ea;
+      --color-purple-soft: rgba(168, 85, 247, 0.15);
+
+      --color-text: #ffffff;
+      --color-text-muted: #a1a1aa;
+      --color-text-subtle: #71717a;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.35);
+
+      --header-height: 72px;
+      --container: 1200px;
+      --transition: 0.2s ease;
+    }
+
+    /* ========================================
+       RESET & BASE
+    ======================================== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ========================================
+       UTILITIES
+    ======================================== */
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ========================================
+       BUTTONS
+    ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      transition: background-color var(--transition), transform var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background-color: var(--color-purple);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-purple-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255, 255, 255, 0.6);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-sm {
+      padding: 8px 18px;
+      font-size: 0.875rem;
+    }
+
+    /* ========================================
+       HEADER
+    ======================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--header-height);
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo__icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--color-purple), #7c3aed);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .logo__icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav__link {
+      font-size: 0.925rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      position: relative;
+      transition: color var(--transition);
+    }
+
+    .nav__link:hover,
+    .nav__link.is-active {
+      color: var(--color-text);
+    }
+
+    .nav__link.is-active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 2px;
+      background: var(--color-purple);
+      border-radius: 2px;
+    }
+
+    .header__actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      color: #fff;
+    }
+
+    .menu-toggle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Mobile nav */
+    .nav--mobile {
+      display: none;
+      position: absolute;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      background: var(--color-bg-elevated);
+      border-bottom: 1px solid var(--color-border);
+      padding: 20px 24px 28px;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav--mobile.is-open {
+      display: flex;
+    }
+
+    .nav--mobile .nav__link {
+      padding: 12px 0;
+      font-size: 1.05rem;
+    }
+
+    /* ========================================
+       HERO
+    ======================================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: var(--header-height);
+      overflow: hidden;
+    }
+
+    /* Espaço da imagem principal do hero */
+    .hero__media {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero__media-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a0a2e 0%, #0a0a0a 50%, #1a0a2e 100%);
+      display: grid;
+      place-items: center;
+      border: none;
+    }
+
+    .hero__media-placeholder span {
+      color: var(--color-text-subtle);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-align: center;
+      padding: 24px;
+      border: 2px dashed var(--color-border);
+      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Quando você colocar a imagem, use a tag <img> dentro de .hero__media
+       e remova ou oculte o .hero__media-placeholder */
+    .hero__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse 70% 60% at 75% 40%, rgba(168, 85, 247, 0.22) 0%, transparent 55%),
+        linear-gradient(to right, rgba(10, 10, 10, 0.97) 0%, rgba(10, 10, 10, 0.85) 42%, rgba(10, 10, 10, 0.35) 70%, transparent 100%);
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding-block: 80px 100px;
+    }
+
+    .hero__text {
+      max-width: 540px;
+    }
+
+    .hero__title {
+      font-size: clamp(2.35rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero__title span {
+      color: var(--color-purple);
+    }
+
+    .hero__description {
+      font-size: 1.1rem;
+      color: var(--color-text-muted);
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      color: var(--color-purple);
+      animation: bounce 2.2s infinite;
+    }
+
+    .hero__scroll svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-8px); }
+      60% { transform: translateX(-50%) translateY(-4px); }
+    }
+
+    /* ========================================
+       SECTIONS
+    ======================================== */
+    .section {
+      padding-block: 88px;
+    }
+
+    .section--alt {
+      background-color: #0c0c0c;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .section__header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      gap: 16px;
+    }
+
+    .section__title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+      padding-bottom: 12px;
+    }
+
+    .section__title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 44px;
+      height: 3px;
+      background: var(--color-purple);
+      border-radius: 2px;
+    }
+
+    .section__link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--color-purple);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap var(--transition);
+    }
+
+    .section__link:hover {
+      gap: 10px;
+    }
+
+    /* ========================================
+       PROJECTS + QUOTES LAYOUT
+    ======================================== */
+    .grid-main {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* ========================================
+       PROJECT CARDS
+    ======================================== */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168, 85, 247, 0.35);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Espaço da imagem do card */
+    .project-card__media {
+      aspect-ratio: 16 / 10;
+      background: var(--color-bg-elevated);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card__media-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .project-card__media-placeholder span {
+      font-size: 0.8rem;
+      color: var(--color-text-subtle);
+      text-align: center;
+      padding: 12px;
+      border: 1.5px dashed var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .project-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-card__body {
+      padding: 20px;
+    }
+
+    .project-card__title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .project-card__text {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    /* ========================================
+       QUOTES
+    ======================================== */
+    .quotes {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .quote {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 22px 24px 22px 52px;
+      position: relative;
+      transition: border-color var(--transition);
+    }
+
+    .quote:hover {
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    .quote::before {
+      content: '“';
+      position: absolute;
+      left: 18px;
+      top: 14px;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--color-purple);
+      line-height: 1;
+      opacity: 0.9;
+    }
+
+    .quote p {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* ========================================
+       ABOUT
+    ======================================== */
+    .about {
+      max-width: 720px;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .about .section__title {
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+
+    .about p {
+      font-size: 1.1rem;
+      color: var(--color-text-muted);
+      line-height: 1.75;
+    }
+
+    /* ========================================
+       GALLERY
+    ======================================== */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .gallery__item {
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+    }
+
+    .gallery__placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    .gallery__placeholder span {
+      font-size: 0.8rem;
+      color: var(--color-text-subtle);
+      text-align: center;
+      padding: 12px;
+      border: 1.5px dashed var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .gallery__item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .gallery__item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* ========================================
+       CONTACT
+    ======================================== */
+    .contact {
+      max-width: 520px;
+      margin-inline: auto;
+    }
+
+    .contact .section__title {
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .contact__intro {
+      color: var(--color-text-muted);
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form__label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+    }
+
+    .form__input,
+    .form__textarea {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--color-text);
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition);
+      outline: none;
+    }
+
+    .form__input:focus,
+    .form__textarea:focus {
+      border-color: var(--color-purple);
+    }
+
+    /* Estados de validação (JustValidate + custom) */
+    .form__input.is-invalid,
+    .form__textarea.is-invalid,
+    .form__input.just-validate-error-field,
+    .form__textarea.just-validate-error-field {
+      border-color: #ef4444 !important;
+    }
+
+    .form__input.is-valid,
+    .form__textarea.is-valid {
+      border-color: #22c55e;
+    }
+
+    /* Labels de erro gerados pelo JustValidate */
+    .just-validate-error-label {
+      font-size: 0.8rem;
+      color: #f87171;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .form__error {
+      font-size: 0.8rem;
+      color: #f87171;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .form__error.is-visible {
+      display: block;
+    }
+
+    .form__success {
+      display: none;
+      padding: 16px 18px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: var(--radius-md);
+      color: #86efac;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .form__success.is-visible {
+      display: block;
+    }
+
+    .form__textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ========================================
+       CTA BAR
+    ======================================== */
+    .cta {
+      background: linear-gradient(90deg, #6d28d9 0%, #a855f7 100%);
+      padding-block: 28px;
+    }
+
+    .cta__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cta__content {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .cta__icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cta__icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
+    }
+
+    .cta__title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .cta__text {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social__link {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      transition: background-color var(--transition);
+    }
+
+    .social__link:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .social__link svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+    .footer {
+      padding-block: 22px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--color-text-subtle);
+      border-top: 1px solid var(--color-border);
+      background: #050505;
+    }
+
+    /* ========================================
+       RESPONSIVE
+    ======================================== */
+    @media (max-width: 1024px) {
+      .grid-main {
+        grid-template-columns: 1fr;
+        gap: 56px;
+      }
+
+      .projects {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero__overlay {
+        background:
+          radial-gradient(ellipse 80% 50% at 70% 30%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
+          linear-gradient(to bottom, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.92) 100%);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: grid;
+      }
+
+      .header__actions .btn {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero__content {
+        padding-block: 60px 80px;
+      }
+
+      .hero__text {
+        max-width: 100%;
+      }
+
+      .projects {
+        grid-template-columns: 1fr;
+      }
+
+      .section__header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cta__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cta__content {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .hero__actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    /* Offset for fixed header when scrolling to anchors */
+    section[id] {
+      scroll-margin-top: calc(var(--header-height) + 16px);
+    }
+
+    /* ========================================
+       WHATSAPP FLOATING BUTTON
+    ======================================== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 60px;
+      height: 60px;
+      background: #25d366;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: whatsapp-pulse 2.5s infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(37, 211, 102, 0.55);
+    }
+
+    .whatsapp-float svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+    }
+
+    .whatsapp-float__tooltip {
+      position: absolute;
+      right: 72px;
+      background: #111;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      border: 1px solid #333;
+    }
+
+    .whatsapp-float:hover .whatsapp-float__tooltip {
+      opacity: 1;
+    }
+
+    @keyframes whatsapp-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    @media (max-width: 480px) {
+      .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 54px;
+        height: 54px;
+      }
+      .whatsapp-float svg {
+        width: 28px;
+        height: 28px;
+      }
+      .whatsapp-float__tooltip {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#inicio" class="logo">
+        <div class="logo__icon">
+          <!-- Ícone dançarino (SVG) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm-1.5 6.5h3l1.5 4.5 2.5-1.5 1 1.7-3.5 2-1.5 5.5h-2l-1.5-5.5-3.5-2 1-1.7 2.5 1.5 1.5-4.5z"/>
+          </svg>
+        </div>
+        <span>DANÇAR É VIVER</span>
+      </a>
+
+      <nav class="nav" aria-label="Menu principal">
+        <a href="#inicio" class="nav__link is-active">Início</a>
+        <a href="#sobre" class="nav__link">Sobre</a>
+        <a href="#projetos" class="nav__link">Projetos</a>
+        <a href="#frases" class="nav__link">Frases Sociais</a>
+        <a href="#galeria" class="nav__link">Galeria</a>
+        <a href="#contato" class="nav__link">Contato</a>
+      </nav>
+
+      <div class="header__actions">
+        <a href="#apoie" class="btn btn-primary">Apoie o projeto</a>
+        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <nav class="nav--mobile" aria-label="Menu mobile">
+      <a href="#inicio" class="nav__link">Início</a>
+      <a href="#sobre" class="nav__link">Sobre</a>
+      <a href="#projetos" class="nav__link">Projetos</a>
+      <a href="#frases" class="nav__link">Frases Sociais</a>
+      <a href="#galeria" class="nav__link">Galeria</a>
+      <a href="#contato" class="nav__link">Contato</a>
+      <a href="#apoie" class="btn btn-primary" style="margin-top: 12px;">Apoie o projeto</a>
+    </nav>
+  </header>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="inicio">
+    <div class="hero__media">
+      <div class="hero__media-placeholder">
+ <img src="decss.jpg" alt="" />
+
+
+
+
+      </div>
+      <!-- 
+      Exemplo de como fica quando você colocar a imagem:
+      <img src="imagens/hero.jpg" alt="Dançarino de druíl em movimento" />
+      -->
+    </div>
+
+    <div class="hero__overlay"></div>
+
+    <div class="hero__content">
+      <div class="container">
+        <div class="hero__text">
+          <h1 class="hero__title">
+            A dança transforma.<br />
+            <span>Movimenta, inspira<br />e une pessoas.</span>
+          </h1>
+          <p class="hero__description">
+            Bem-vindo ao meu espaço. Aqui você conhece meus projetos de dança de druíl e as causas sociais que movem o meu propósito.
+          </p>
+          <div class="hero__actions">
+            <a href="#projetos" class="btn btn-primary">Conheça meus projetos</a>
+            <a href="#frases" class="btn btn-outline">Frases sociais</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== PROJETOS + FRASES ==================== -->
+  <section class="section" id="projetos">
+    <div class="container">
+      <div class="grid-main">
+
+        <!-- Projetos -->
+        <div>
+          <div class="section__header">
+            <h2 class="section__title">Meus Projetos</h2>
+            <a href="#projetos" class="section__link">Ver todos →</a>
+          </div>
+
+          <div class="projects">
+            <!-- Projeto 1 -->
+            <article class="project-card">
+              <div class="project-card__media">
+                <!-- 
+                  IMAGEM DO PROJETO 1
+                  Substitua o placeholder por:
+                  <img src="imagens/projeto-comunidade.jpg" alt="Dança na Comunidade" />
+                -->
+                <div class="project-card__media-placeholder">
+                  <img src="grok_1789041085637.jpg" alt="" />
+                </div>
+              </div>
+              <div class="project-card__body">
+                <h3 class="project-card__title">Dança na Comunidade</h3>
+                <p class="project-card__text">Aulas gratuitas de druíl para crianças e jovens.</p>
+                <a href="#contato" class="btn btn-primary btn-sm">Saiba mais</a>
+              </div>
+            </article>
+.                                     
+            <!-- Projeto 2 -->
+            <article class="project-card">
+              <div class="project-card__media">
+                <!-- 
+                  IMAGEM DO PROJETO 2
+                  Substitua o placeholder por:
+                  <img src="imagens/projeto-battle.jpg" alt="Battle de Druil" />
+                -->
+                <div class="project-card__media-placeholder">
+                  <img src="IMG_20260825_145452_299.jpg" alt="" />
+                </div>
+              </div>
+              <div class="project-card__body">
+                <h3 class="project-card__title">Battle de Druil</h3>
+                <p class="project-card__text">Competições e encontros para fortalecer a cultura.</p>
+                <a href="#contato" class="btn btn-primary btn-sm">Saiba mais</a>
+              </div>
+            </article>
+
+            <!-- Projeto 3 -->
+            <article class="project-card">
+              <div class="project-card__media">
+                <!-- 
+                  IMAGEM DO PROJETO 3
+                  Substitua o placeholder por:
+                  <img src="imagens/projeto-transforma.jpg" alt="Dança que Transforma" />
+                -->
+                <div class="project-card__media-placeholder">
+                  <img src="eio.jpg" alt="" />
+                </div>
+              </div>
+              <div class="project-card__body">
+                <h3 class="project-card__title">Dança que Transforma</h3>
+                <p class="project-card__text">Projetos sociais que usam a dança como ferramenta de inclusão.</p>
+                <a href="#contato" class="btn btn-primary btn-sm">Saiba mais</a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Frases Sociais -->
+        <div id="frases">
+          <div class="section__header">
+            <h2 class="section__title">Frases Sociais</h2>
+          </div>
+
+          <div class="quotes">
+            <blockquote class="quote">
+              <p>A dança é resistência, arte e esperança.</p>
+            </blockquote>
+            <blockquote class="quote">
+              <p>Movimento é vida. Dance, lute, conquiste.</p>
+            </blockquote>
+            <blockquote class="quote">
+              <p>Mais dança, menos preconceito. Mais inclusão, mais humanidade.</p>
+            </blockquote>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SOBRE ==================== -->
+  <section class="section section--alt" id="sobre">
+    <div class="container">
+      <div class="about">
+        <h2 class="section__title">Sobre</h2>
+        <p>
+          A dança sempre foi mais do que movimento para mim. É identidade, resistência e transformação social. 
+          Através do druíl e de projetos comunitários, busco criar espaços onde jovens possam se expressar, 
+          desenvolver disciplina e construir um futuro com mais oportunidades e menos preconceito.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== GALERIA ==================== -->
+  <section class="section" id="galeria">
+    <div class="container">
+      <div class="section__header">
+        <h2 class="section__title">Galeria</h2>
+      </div>
+
+      <div class="gallery">
+        <!-- 
+          GALERIA — 4 espaços de imagem
+          Substitua cada placeholder por:
+          <img src="imagens/galeria-1.jpg" alt="Descrição da foto" />
+        -->
+        <div class="gallery__item">
+          <img src="leria1.jpg" alt="" />
+        </div>
+        </div>
+        <div class="gallery__item">
+          <img src="chegada.jpg" alt="" />
+          </div>
+        </div>
+        
+        
+    <div class="gallery__item">
+          <div class="gallery__placeholder"><img src="comunidade.jpg" alt="" /></div>
+        </div>
+        </div>
+        <div class="gallery__item">
+          <div class="gallery__placeholder"><img src="esses.jpg" alt="" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTATO ==================== -->
+  <section class="section section--alt" id="contato">
+    <div class="container">
+      <div class="contact" style="text-align: center;">
+        <h2 class="section__title">Contato</h2>
+        <p class="contact__intro">
+          Quer apoiar, participar ou saber mais sobre os projetos? Envie uma mensagem.
+        </p>
+
+        <form class="form" id="contact-form" action="https://formsubmit.co/lilisandro2805@gmail.com" method="POST" novalidate style="text-align: left;">
+          <!-- Campos ocultos do FormSubmit -->
+          <input type="hidden" name="_subject" value="Nova mensagem do site Dançar é Viver" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <!-- Quando o site estiver online, troque pelo link completo da página de vídeos -->
+          <input type="hidden" name="_next" value="videos.html" />
+
+          <div class="form__success" id="form-success" role="status" aria-live="polite">
+            Mensagem enviada com sucesso! Redirecionando para os vídeos...
+          </div>
+
+          <div class="form__field">
+            <label class="form__label" for="nome">Nome</label>
+            <input class="form__input" type="text" id="nome" name="nome" placeholder="Seu nome" autocomplete="name" />
+          </div>
+
+          <div class="form__field">
+            <label class="form__label" for="email">E-mail</label>
+            <input class="form__input" type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" />
+          </div>
+
+          <div class="form__field">
+            <label class="form__label" for="mensagem">Mensagem</label>
+            <textarea class="form__textarea" id="mensagem" name="mensagem" placeholder="Escreva sua mensagem..." rows="4"></textarea>
+          </div>
+
+          <a href="videos-1.html"><button type="submit" class="btn btn-primary" id="submit-btn">Enviar mensagem</button></a>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA ==================== -->
+  <aside class="cta" id="apoie">
+    <div class="container cta__inner">
+      <div class="cta__content">
+        <div class="cta__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="cta__title">Juntos podemos dançar por um mundo melhor.</h3>
+          <p class="cta__text">Apoie meus projetos. Compartilhe. Participe.</p>
+        </div>
+      </div>
+
+      <div class="social">
+        <!-- Substitua os href="#" pelos links reais das suas redes -->
+        <a href="#" class="social__link" aria-label="Instagram" title="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="#" class="social__link" aria-label="YouTube" title="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="#" class="social__link" aria-label="TikTok" title="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003 15.28a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.04-.09z"/></svg>
+        </a>
+        <a href="#" class="social__link" aria-label="Website" title="Website">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      © 2024 Dançar é Viver. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <!-- ==================== WHATSAPP FLOATING BUTTON ==================== -->
+  <!-- 
+    TROQUE O NÚMERO ABAIXO pelo WhatsApp Business (somente dígitos, com DDI).
+    Exemplos:
+    - Angola: 244923000000
+    - Brasil: 5511999999999
+    - Portugal: 351912345678
+  -->
+  <a 
+    href="https://wa.me/923030205" 
+    class="whatsapp-float" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    aria-label="Falar no WhatsApp"
+    title="Falar no WhatsApp"
+    id="whatsapp-btn"
+  >
+    <span class="whatsapp-float__tooltip">Fale conosco</span>
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16.004 0h-.008C7.174 0 0 7.176 0 16.004c0 2.824.736 5.582 2.134 8.01L.7 30.82l6.996-1.836A15.94 15.94 0 0016.004 32C24.83 32 32 24.822 32 15.996 32 7.176 24.83 0 16.004 0zm9.288 22.57c-.388 1.094-1.926 2.004-3.16 2.27-.84.18-1.936.324-5.632-1.21-4.732-1.962-7.78-6.78-8.016-7.092-.226-.312-1.91-2.54-1.91-4.846 0-2.306 1.21-3.44 1.64-3.91.388-.424.906-.55 1.208-.55.3 0 .604.002.868.016.28.012.654-.106 1.024.782.388.926 1.32 3.222 1.436 3.456.116.234.194.508.038.816-.15.312-.226.508-.45.78-.226.27-.474.604-.676.812-.226.234-.46.486-.198.954.262.468 1.164 1.92 2.5 3.11 1.716 1.528 3.162 2.004 3.61 2"/>
+    </svg>
+  </a>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileNav = document.querySelector('.nav--mobile');
+
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close mobile menu when clicking a link
+    mobileNav?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav .nav__link');
+
+    function updateActiveLink() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('is-active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('is-active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink();
+
+    // ========================================
+    // WHATSAPP CONFIG
+    // ========================================
+    // Coloque aqui o número do WhatsApp Business (só números, com DDI)
+    const WHATSAPP_NUMBER = '952 901 091'; // ← TROQUE PELO NÚMERO REAL
+    const WHATSAPP_MESSAGE = 'Olá! Vim pelo site Dançar é Viver e gostaria de saber mais sobre os projetos.';
+
+    function getWhatsAppUrl(extraText = '') {
+      const text = encodeURIComponent(extraText || WHATSAPP_MESSAGE);
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+    }
+
+    // Atualiza o botão flutuante com o número correto
+    const whatsappBtn = document.getElementById('whatsapp-btn');
+    if (whatsappBtn) {
+      whatsappBtn.href = getWhatsAppUrl();
+    }
+
+    // ========================================
+    // FORM VALIDATION (JustValidate)
+    // ========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contact-form');
+      const successMsg = document.getElementById('form-success');
+      const submitBtn = document.getElementById('submit-btn');
+
+      if (!form || typeof JustValidate === 'undefined') return;
+
+      const validator = new JustValidate('#contact-form', {
+        errorFieldCssClass: 'is-invalid',
+        successFieldCssClass: 'is-valid',
+        errorLabelCssClass: 'just-validate-error-label',
+        focusInvalidField: true,
+        lockForm: true,
+        validateBeforeSubmitting: true,
+      });
+
+      validator
+        .addField('#nome', [
+          {
+            rule: 'required',
+            errorMessage: 'Por favor, informe seu nome.',
+          },
+          {
+            rule: 'minLength',
+            value: 2,
+            errorMessage: 'O nome deve ter pelo menos 2 caracteres.',
+          },
+          {
+            rule: 'customRegexp',
+            value: /^[a-zA-ZÀ-ÿ\s'-]+$/,
+            errorMessage: 'Use apenas letras no nome.',
+          },
+        ])
+        .addField('#email', [
+          {
+            rule: 'required',
+            errorMessage: 'Por favor, informe seu e-mail.',
+          },
+          {
+            rule: 'email',
+            errorMessage: 'Digite um e-mail válido (ex: nome@email.com).',
+          },
+        ])
+        .addField('#mensagem', [
+          {
+            rule: 'required',
+            errorMessage: 'Por favor, escreva uma mensagem.',
+          },
+          {
+            rule: 'minLength',
+            value: 10,
+            errorMessage: 'A mensagem deve ter pelo menos 10 caracteres.',
+          },
+        ])
+        .onSuccess((event) => {
+          event.preventDefault();
+
+          successMsg.classList.remove('is-visible');
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Enviando...';
+
+          const formData = new FormData(form);
+
+          // Envia para o e-mail via FormSubmit (AJAX)
+          fetch('https://formsubmit.co/ajax/lilisandro2805@gmail.com', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Monta mensagem personalizada para o WhatsApp com os dados do formulário
+            const nome = formData.get('nome') || '';
+            const email = formData.get('email') || '';
+            const mensagem = formData.get('mensagem') || '';
+            const whatsappText = `Olá! Enviei uma mensagem pelo site.\n\nNome: ${nome}\nE-mail: ${email}\nMensagem: ${mensagem}`;
+
+            successMsg.innerHTML = `
+              Mensagem enviada com sucesso!<br>
+              <small style="opacity:0.9">Você será redirecionado para os vídeos. Também pode continuar pelo WhatsApp.</small>
+            `;
+            successMsg.classList.add('is-visible');
+            successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            form.reset();
+            form.querySelectorAll('.is-valid, .is-invalid').forEach((el) => {
+              el.classList.remove('is-valid', 'is-invalid');
+            });
+            form.querySelectorAll('.just-validate-error-label').forEach((el) => {
+              el.remove();
+            });
+
+            // Abre WhatsApp em nova aba com os dados preenchidos (opcional)
+            // window.open(getWhatsAppUrl(whatsappText), '_blank');
+
+            // Redireciona para a página de vídeos após 2s
+            setTimeout(() => {
+              window.location.href = 'videos-1.html';
+            }, 2000);
+          })
+          .catch(error => {
+            console.error('Erro ao enviar:', error);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Enviar mensagem';
+            alert('Ocorreu um erro ao enviar. Tente pelo WhatsApp ou envie um e-mail para lilisandro2805@gmail.com');
+          });
+        });
+    });
+  </script>
+</body>
+</html>
